@@ -1,7 +1,6 @@
 "use client";
 
 import useSigninModal from "@/hooks/use-signin-modal";
-import axios from "axios";
 import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -39,20 +38,20 @@ const SignInModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
-    try {
-      signIn("credentials", {
-        ...data,
-        redirect: false,
+    await signIn("credentials", {
+      ...data,
+    })
+      .then(() => {
+        toast.success("Signed in successfully");
+        router.refresh();
+        signinModal.onClose();
+      })
+      .catch((error) => {
+        toast.error(error?.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-
-      toast.success("Signed in successfully");
-      router.refresh();
-      signinModal.onClose();
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const bodyContent = (

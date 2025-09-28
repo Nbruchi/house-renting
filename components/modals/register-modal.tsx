@@ -38,15 +38,20 @@ const RegisterModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
-    try {
-      await axios.post("/api/sign-up", data);
-      toast.success("Account created");
-      signupModal.onClose();
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
-      setIsLoading(false);
-    }
+
+    await axios
+      .post("/api/sign-up", data)
+      .then(() => {
+        toast.success("Account created");
+        signupModal.onClose();
+        signinModal.onOpen();
+      })
+      .catch((error) => {
+        toast.error(error?.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const bodyContent = (

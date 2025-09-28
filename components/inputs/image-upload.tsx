@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback } from "react";
-import { CldUploadWidget,CldImage } from "next-cloudinary";
+import { CldUploadWidget } from "next-cloudinary";
 import { TbPhotoPlus } from "react-icons/tb";
+import Image from "next/image";
 
 declare global {
   var cloudinary: any;
@@ -25,7 +26,7 @@ const ImageUpload = ({ value, onChange }: ImageUploadProps) => {
     <CldUploadWidget
       onUpload={handleUpload}
       uploadPreset="airbnb"
-      options={{ maxFiles: 1,resourceType:"image" }}
+      options={{ maxFiles: 1, resourceType: "image" }}
     >
       {({ open }) => {
         return (
@@ -37,7 +38,7 @@ const ImageUpload = ({ value, onChange }: ImageUploadProps) => {
             <p className="font-semibold text-lg">Add a photo</p>
             {value && (
               <div className="absolute inset-0 w-full h-full">
-                <CldImage
+                <Image
                   src={value}
                   alt="Upload"
                   fill
